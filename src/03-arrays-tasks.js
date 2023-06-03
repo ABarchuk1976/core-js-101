@@ -649,8 +649,6 @@ function swapHeadAndTail(arr) {
   const head = arr.slice(0, halfLen);
   const tail = arr.slice(length - halfLen);
 
-  console.log('PARTS: ', head, center, tail);
-
   return center ? [...tail, center, ...head] : [...tail, ...head];
 }
 
