@@ -60,10 +60,8 @@ function willYouMarryMe(isPositiveAnswer) {
  *    })
  *
  */
-function processAllPromises(array) {
-  return Promise.all(array)
-    .then((data) => console.log(data))
-    .catch((error) => console.error(error.message));
+function processAllPromises(/* array */) {
+  throw new Error('Not implemented');
 }
 
 /**
