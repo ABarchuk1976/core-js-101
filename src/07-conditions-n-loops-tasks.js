@@ -131,8 +131,20 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  const {
+    top: top1, left: left1, width: w1, height: h1,
+  } = rect1;
+  const {
+    top: top2, left: left2, width: w2, height: h2,
+  } = rect2;
+  const bottom1 = top1 + h1;
+  const right1 = left1 + w1;
+  const bottom2 = top2 + h2;
+  const right2 = left2 + w2;
+  const var1 = (top1 >= top2 && top1 <= bottom2 && left1 >= left2 && left1 <= right2);
+  const var2 = (top2 >= top1 && top2 <= bottom1 && left2 >= left1 && left2 <= right1);
+  return var1 || var2;
 }
 
 
@@ -162,8 +174,11 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const { center: { x: xC, y: yC }, radius } = circle;
+  const { x: xP, y: yP } = point;
+
+  return radius > Math.sqrt(Math.abs(xC - xP) ** 2 + Math.abs(yC - yP) ** 2);
 }
 
 
@@ -178,8 +193,15 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const { length } = str;
+  for (let idx = 0; idx < length; idx += 1) {
+    const req1 = idx !== length - 1 ? str.indexOf(str[idx], idx + 1) === -1 : true;
+    const req2 = idx ? str.lastIndexOf(str[idx], idx - 1) === -1 : true;
+    if (req1 && req2) return str[idx];
+  }
+
+  return null;
 }
 
 
@@ -205,8 +227,11 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  const start = isStartIncluded ? '[' : '(';
+  const end = isEndIncluded ? ']' : ')';
+
+  return `${start}${Math.min(a, b)}, ${Math.max(a, b)}${end}`;
 }
 
 
@@ -222,8 +247,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -239,8 +264,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return +num.toString().split('').reverse().join('');
 }
 
 
@@ -264,8 +289,22 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const control = ccn % 10;
+  const cardNumber = Math.floor(ccn / 10);
+  const sumByAlgorithm = cardNumber
+    .toString()
+    .split('')
+    .reverse()
+    .map((item, idx) => (idx % 2 ? +item : +item * 2))
+    .reduce((acc, item) => {
+    // eslint-disable-next-line no-param-reassign
+      acc += (item % 10) + Math.floor(item / 10);
+      return acc;
+    }, 0);
+  const control2 = 10 - (sumByAlgorithm % 10);
+
+  return control === control2;
 }
 
 /**
@@ -282,8 +321,14 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const sum = num.toString().split('').reduce((acc, item) => {
+    // eslint-disable-next-line no-param-reassign
+    acc += +item;
+    return acc;
+  }, 0);
+
+  if (sum > 9) { return getDigitalRoot(sum); } return sum;
 }
 
 
@@ -333,8 +378,16 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  let res = (num % n).toString();
+  let base = Math.floor(num / n);
+
+  while (base > 0) {
+    res = (base % n).toString() + res;
+    base = Math.floor(base / n);
+  }
+
+  return res;
 }
 
 
